@@ -10,6 +10,20 @@
 //   color: string
 // }
 
+// interface ChartData {
+//   dailyActiveUsers: number[]
+//   postActivity: PostActivityData[]
+// }
+
+// const isChartData = (data: unknown): data is ChartData => {
+//   return (
+//     typeof data === "object" &&
+//     data !== null &&
+//     "postActivity" in data &&
+//     Array.isArray((data as ChartData).postActivity)
+//   )
+// }
+
 // export function PostActivityChart() {
 //   const [data, setData] = useState<PostActivityData[]>([])
 //   const [loading, setLoading] = useState(true)
@@ -20,7 +34,12 @@
 //       try {
 //         setLoading(true)
 //         const chartData = await apiService.getChartData()
-//         setData(chartData.postActivity)
+
+//         if (isChartData(chartData)) {
+//           setData(chartData.postActivity)
+//         } else {
+//           throw new Error("Invalid chart data format")
+//         }
 //       } catch (err) {
 //         setError(err instanceof Error ? err.message : "Failed to fetch chart data")
 //         console.error("Error fetching chart data:", err)
@@ -173,16 +192,16 @@ export function PostActivityChart() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-300">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
-          <div className="h-3 bg-gray-200 rounded w-1/2 mb-6"></div>
-          <div className="w-48 h-48 bg-gray-200 rounded-full mx-auto mb-6"></div>
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-2"></div>
+          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-6"></div>
+          <div className="w-48 h-48 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-6"></div>
           <div className="space-y-3">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="flex justify-between">
-                <div className="h-3 bg-gray-200 rounded w-1/3"></div>
-                <div className="h-3 bg-gray-200 rounded w-16"></div>
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-16"></div>
               </div>
             ))}
           </div>
@@ -193,8 +212,8 @@ export function PostActivityChart() {
 
   if (error) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="text-center text-red-600">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-300">
+        <div className="text-center text-red-600 dark:text-red-400">
           <p>Error loading chart data</p>
           <p className="text-sm">{error}</p>
         </div>
@@ -205,10 +224,10 @@ export function PostActivityChart() {
   const total = data.reduce((sum, item) => sum + item.value, 0)
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-colors duration-300">
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Post Activity</h3>
-        <p className="text-sm text-gray-600">Distribution of post actions</p>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Post Activity</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Distribution of post actions</p>
       </div>
 
       <div className="flex items-center justify-center mb-6">
@@ -248,9 +267,9 @@ export function PostActivityChart() {
           <div key={index} className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className={`w-3 h-3 rounded-full ${item.color}`} />
-              <span className="text-sm text-gray-700">{item.label}</span>
+              <span className="text-sm text-gray-700 dark:text-gray-300">{item.label}</span>
             </div>
-            <span className="text-sm font-medium text-gray-900">{item.value.toLocaleString()}</span>
+            <span className="text-sm font-medium text-gray-900 dark:text-white">{item.value.toLocaleString()}</span>
           </div>
         ))}
       </div>
